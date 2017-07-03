@@ -1,11 +1,11 @@
 package com.caracode.whatclothes.common.dagger;
 
-import com.caracode.whatclothes.service.NetworkService;
+import com.caracode.whatclothes.main.MainActivity;
 
 @ApplicationScope
 @dagger.Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
 
-    NetworkService networkService();
+    void inject(MainActivity mainActivity);
 
 }

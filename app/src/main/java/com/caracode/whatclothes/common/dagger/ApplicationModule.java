@@ -2,8 +2,10 @@ package com.caracode.whatclothes.common.dagger;
 
 import android.support.annotation.NonNull;
 
+import com.caracode.whatclothes.api.WeatherApi;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
 import com.caracode.whatclothes.service.NetworkService;
+import com.caracode.whatclothes.service.WeatherService;
 import com.google.gson.GsonBuilder;
 
 import dagger.Module;
@@ -26,5 +28,11 @@ public class ApplicationModule {
     @ApplicationScope
     NetworkService provideNetworkService(@NonNull GsonConverterFactory gsonConverterFactory) {
         return new NetworkService(gsonConverterFactory, new OkHttpClient().newBuilder().build());
+    }
+
+    @Provides
+    @ApplicationScope
+    WeatherService provideWeatherService(@NonNull NetworkService networkService) {
+        return new WeatherService(networkService.createService(WeatherApi.class));
     }
 }

@@ -7,7 +7,11 @@ import android.widget.TextView;
 
 import com.caracode.whatclothes.R;
 import com.caracode.whatclothes.common.BaseActivity;
+import com.caracode.whatclothes.common.ComponentManager;
+import com.caracode.whatclothes.service.WeatherService;
 import com.jakewharton.rxbinding2.view.RxView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
@@ -19,6 +23,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @BindView(R.id.button)
     Button bChange;
 
+    @Inject
+    WeatherService weatherService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +35,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @NonNull
     @Override
     public MainPresenter providePresenter() {
-        return new MainPresenter();
+        ComponentManager.instance().get().inject(this);
+        return new MainPresenter(weatherService);
     }
 
     @Override
