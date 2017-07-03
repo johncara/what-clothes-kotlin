@@ -33,7 +33,7 @@ public class MainPresenterTest {
         when(view.onButtonPress()).thenReturn(Observable.just(new Object()));
 
         presenter.attachView(view);
-        
+
         verify(view).showText("Hello 30 Inch");
     }
 
