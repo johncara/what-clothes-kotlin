@@ -49,6 +49,7 @@ dependencies {
     compile "net.grandcentrix.thirtyinch:thirtyinch:0.8.0"
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
     // Android Test Libraries
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

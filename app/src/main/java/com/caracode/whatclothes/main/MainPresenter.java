@@ -9,6 +9,8 @@ public class MainPresenter extends TiPresenter<MainView> {
     @Override
     protected void onAttachView(@NonNull final MainView view) {
         super.onAttachView(view);
-        view.showText("Hello 30 Inch");
+
+        view.onButtonPress()
+                .subscribe(o -> view.showText("Hello 30 Inch"));
     }
 }
