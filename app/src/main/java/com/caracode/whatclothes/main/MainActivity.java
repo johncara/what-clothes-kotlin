@@ -1,14 +1,15 @@
 package com.caracode.whatclothes.main;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.caracode.whatclothes.R;
+import com.caracode.whatclothes.common.BaseActivity;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.BindView;
-import common.BaseActivity;
 import io.reactivex.Observable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainView> implements MainView {

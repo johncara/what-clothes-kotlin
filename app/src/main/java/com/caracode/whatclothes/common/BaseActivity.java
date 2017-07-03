@@ -1,4 +1,4 @@
-package common;
+package com.caracode.whatclothes.common;
 import android.support.annotation.LayoutRes;
 
 import net.grandcentrix.thirtyinch.TiActivity;
