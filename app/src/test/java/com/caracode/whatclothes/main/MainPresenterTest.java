@@ -1,5 +1,7 @@
 package com.caracode.whatclothes.main;
 
+import com.caracode.whatclothes.service.WeatherService;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -18,18 +22,28 @@ public class MainPresenterTest {
 
     @Mock
     MainView view;
+    @Mock
+    WeatherService weatherServiceMock;
+    @Mock
+    private Weather weatherMock;
+    @Mock
+    private Weather.Coordinates coordinatesMock;
+
+    CompositeDisposable networkDisposable = new CompositeDisposable();
+    CompositeDisposable viewDisposable = new CompositeDisposable();
 
     private MainPresenter presenter;
 
     @Before
     public void before() {
-        presenter = new MainPresenter();
+        presenter = new MainPresenter(weatherServiceMock, networkDisposable, viewDisposable);
         presenter.create();
         when(view.onButtonPress()).thenReturn(Observable.never());
+        when(weatherServiceMock.getWeather()).thenReturn(Single.never());
     }
 
     @Test
-    public void testAttach() {
+    public void testAttachShowText() {
         when(view.onButtonPress()).thenReturn(Observable.just(new Object()));
 
         presenter.attachView(view);

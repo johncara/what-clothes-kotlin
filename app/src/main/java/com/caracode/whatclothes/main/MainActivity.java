@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainView> implements MainView {
 
@@ -25,6 +26,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
 
     @Inject
     WeatherService weatherService;
+    @Inject
+    CompositeDisposable networkDisposable;
+    @Inject
+    CompositeDisposable viewDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +41,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @Override
     public MainPresenter providePresenter() {
         ComponentManager.instance().get().inject(this);
-        return new MainPresenter(weatherService);
+        return new MainPresenter(weatherService, networkDisposable, viewDisposable);
     }
 
     @Override

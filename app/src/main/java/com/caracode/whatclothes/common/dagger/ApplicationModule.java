@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.OkHttpClient;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -34,5 +35,11 @@ public class ApplicationModule {
     @ApplicationScope
     WeatherService provideWeatherService(@NonNull NetworkService networkService) {
         return new WeatherService(networkService.createService(WeatherApi.class));
+    }
+
+    @Provides
+    @ApplicationScope
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
     }
 }
