@@ -25,9 +25,11 @@ class MainPresenter extends TiPresenter<MainView> {
     protected void onAttachView(@NonNull final MainView view) {
         super.onAttachView(view);
 
-        networkDisposable.add(weatherService.getWeather()
-                .subscribe(this::showCoordinates,
-                        Throwable::printStackTrace));
+        networkDisposable.add(
+                weatherService.getWeather()
+                            .subscribe(
+                                this::showCoordinates,
+                                Throwable::printStackTrace));
 
         viewDisposable.add(view.onButtonPress()
                 .subscribe(o -> view.showText("Hello 30 Inch")));

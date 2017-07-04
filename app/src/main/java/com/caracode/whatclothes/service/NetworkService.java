@@ -14,12 +14,12 @@ public class NetworkService {
 
     private final Retrofit retrofit;
 
-    public NetworkService(@NonNull GsonConverterFactory gsonConverterFactory, @NonNull OkHttpClient httpClient) {
+    public NetworkService(@NonNull GsonConverterFactory gsonConverterFactory, @NonNull OkHttpClient stethoClient) {
         retrofit = new Retrofit.Builder()
                 .baseUrl(DEFAULT_WEATHER_URL)
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .client(httpClient)
+                .client(stethoClient)
                 .build();
     }
 

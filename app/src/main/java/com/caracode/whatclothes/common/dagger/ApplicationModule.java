@@ -6,6 +6,7 @@ import com.caracode.whatclothes.api.WeatherApi;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
 import com.caracode.whatclothes.service.NetworkService;
 import com.caracode.whatclothes.service.WeatherService;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 
 import dagger.Module;
@@ -25,10 +26,21 @@ public class ApplicationModule {
                     .create());
     }
 
+    /**
+     * Stetho allows easy inspection of API calls
+     * Should never release code with this Interceptor in place
+     * @return
+     */
     @Provides
     @ApplicationScope
-    NetworkService provideNetworkService(@NonNull GsonConverterFactory gsonConverterFactory) {
-        return new NetworkService(gsonConverterFactory, new OkHttpClient().newBuilder().build());
+    OkHttpClient provideStethoOkHttpClient() {
+        return new OkHttpClient().newBuilder().addNetworkInterceptor(new StethoInterceptor()).build();
+    }
+
+    @Provides
+    @ApplicationScope
+    NetworkService provideNetworkService(@NonNull GsonConverterFactory gsonConverterFactory, @NonNull OkHttpClient stethoClient) {
+        return new NetworkService(gsonConverterFactory, stethoClient);
     }
 
     @Provides
