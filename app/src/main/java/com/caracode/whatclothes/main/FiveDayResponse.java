@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 @AutoValue
@@ -25,6 +27,6 @@ public abstract class FiveDayResponse {
         }
 
         @SerializedName("dt")
-        public abstract float dateTime();
+        public abstract DateTime dateTime();
     }
 }
