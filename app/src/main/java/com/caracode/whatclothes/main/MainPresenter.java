@@ -3,7 +3,6 @@ package com.caracode.whatclothes.main;
 import android.support.annotation.NonNull;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
-import com.caracode.whatclothes.api.response.PhotosResponse;
 import com.caracode.whatclothes.service.PhotoService;
 import com.caracode.whatclothes.service.WeatherService;
 
@@ -12,6 +11,8 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 import io.reactivex.disposables.CompositeDisposable;
 
 class MainPresenter extends TiPresenter<MainView> {
+
+    private static final String FLICKER_PHOTO_URL_FORMAT = "https://farm%1$s.staticflickr.com/%2$s/%3$s_%4$s.jpg";
 
     private final WeatherService weatherService;
     private final PhotoService photoService;
@@ -36,9 +37,14 @@ class MainPresenter extends TiPresenter<MainView> {
                         Throwable::printStackTrace));
 
         networkDisposable.add(
-                photoService.getPhotos().subscribe(
-                        this::showPhotoId,
-                        Throwable::printStackTrace));
+                photoService
+                        .getPhotos()
+                        .map(photosResponse -> photosResponse.photos().photos().get(0))
+                        .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
+                                                photo.farm(), photo.server(), photo.id(), photo.secret()))
+                        .subscribe(
+                                this::showPhoto,
+                                Throwable::printStackTrace));
 
 
         viewDisposable.add(
@@ -68,9 +74,9 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-    private void showPhotoId(PhotosResponse photosResponse) {
+    private void showPhoto(String photoUrl) {
         if (isViewAttached() && getView() != null) {
-            getView().showText("Photos: {" + photosResponse + "}");
+            getView().showText("PhotoUrl: {" + photoUrl + "}");
         }
     }
 }

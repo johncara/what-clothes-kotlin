@@ -1,6 +1,7 @@
 package com.caracode.whatclothes.main;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
+import com.caracode.whatclothes.service.PhotoService;
 import com.caracode.whatclothes.service.WeatherService;
 
 import org.junit.After;
@@ -26,6 +27,8 @@ public class MainPresenterTest {
     @Mock
     WeatherService weatherServiceMock;
     @Mock
+    PhotoService photoServiceMock;
+    @Mock
     private FiveDayResponse fiveDayResponseMock;
     @Mock
     private FiveDayResponse.ThreeHourlyUpdate threeHourlyUpdateMock;
@@ -37,7 +40,7 @@ public class MainPresenterTest {
 
     @Before
     public void before() {
-        presenter = new MainPresenter(weatherServiceMock, networkDisposable, viewDisposable);
+        presenter = new MainPresenter(weatherServiceMock, photoServiceMock, networkDisposable, viewDisposable);
         presenter.create();
         when(view.onButtonPress()).thenReturn(Observable.never());
         when(weatherServiceMock.getWeather()).thenReturn(Single.never());
