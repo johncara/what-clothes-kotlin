@@ -1,4 +1,4 @@
-package com.caracode.whatclothes.main;
+package com.caracode.whatclothes.api.response;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;

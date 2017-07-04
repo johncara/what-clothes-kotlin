@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.caracode.whatclothes.R;
 import com.caracode.whatclothes.common.BaseActivity;
 import com.caracode.whatclothes.common.ComponentManager;
+import com.caracode.whatclothes.service.PhotoService;
 import com.caracode.whatclothes.service.WeatherService;
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -27,6 +28,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @Inject
     WeatherService weatherService;
     @Inject
+    PhotoService photoService;
+    @Inject
     CompositeDisposable networkDisposable;
     @Inject
     CompositeDisposable viewDisposable;
@@ -41,7 +44,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @Override
     public MainPresenter providePresenter() {
         ComponentManager.instance().get().inject(this);
-        return new MainPresenter(weatherService, networkDisposable, viewDisposable);
+        return new MainPresenter(weatherService, photoService, networkDisposable, viewDisposable);
     }
 
     @Override
@@ -51,6 +54,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
 
     @Override
     public void showText(String text) {
-        tvHelloWorld.setText(text);
+        tvHelloWorld.append("\n" + text);
     }
 }

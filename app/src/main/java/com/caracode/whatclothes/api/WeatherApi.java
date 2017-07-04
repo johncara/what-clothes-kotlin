@@ -1,6 +1,6 @@
 package com.caracode.whatclothes.api;
 
-import com.caracode.whatclothes.main.FiveDayResponse;
+import com.caracode.whatclothes.api.response.FiveDayResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

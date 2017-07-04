@@ -1,5 +1,6 @@
 package com.caracode.whatclothes.main;
 
+import com.caracode.whatclothes.api.response.FiveDayResponse;
 import com.caracode.whatclothes.service.WeatherService;
 
 import org.junit.After;

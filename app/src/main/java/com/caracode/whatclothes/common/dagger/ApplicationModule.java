@@ -2,10 +2,12 @@ package com.caracode.whatclothes.common.dagger;
 
 import android.support.annotation.NonNull;
 
+import com.caracode.whatclothes.api.PhotoApi;
 import com.caracode.whatclothes.api.WeatherApi;
 import com.caracode.whatclothes.common.DateTimeDeserializer;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
 import com.caracode.whatclothes.service.NetworkService;
+import com.caracode.whatclothes.service.PhotoService;
 import com.caracode.whatclothes.service.WeatherService;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
@@ -51,6 +53,12 @@ public class ApplicationModule {
     @ApplicationScope
     WeatherService provideWeatherService(@NonNull NetworkService networkService) {
         return new WeatherService(networkService.createService(WeatherApi.class));
+    }
+
+    @Provides
+    @ApplicationScope
+    PhotoService providePhotoService(@NonNull NetworkService networkService) {
+        return new PhotoService(networkService.createService(PhotoApi.class, "https://api.flickr.com"));
     }
 
     @Provides
