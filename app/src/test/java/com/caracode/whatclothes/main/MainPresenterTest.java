@@ -25,9 +25,9 @@ public class MainPresenterTest {
     @Mock
     WeatherService weatherServiceMock;
     @Mock
-    private Weather weatherMock;
+    private FiveDayResponse fiveDayResponseMock;
     @Mock
-    private Weather.Coordinates coordinatesMock;
+    private FiveDayResponse.ThreeHourlyUpdate threeHourlyUpdateMock;
 
     CompositeDisposable networkDisposable = new CompositeDisposable();
     CompositeDisposable viewDisposable = new CompositeDisposable();

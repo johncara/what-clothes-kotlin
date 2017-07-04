@@ -3,7 +3,7 @@ package com.caracode.whatclothes.service;
 import android.support.annotation.NonNull;
 
 import com.caracode.whatclothes.api.WeatherApi;
-import com.caracode.whatclothes.main.Weather;
+import com.caracode.whatclothes.main.FiveDayResponse;
 
 import io.reactivex.Single;
 
@@ -15,7 +15,7 @@ public class WeatherService {
         this.weatherApi = weatherApi;
     }
 
-    public Single<Weather> getWeather() {
+    public Single<FiveDayResponse> getWeather() {
         return weatherApi.getWeather();
     }
 }

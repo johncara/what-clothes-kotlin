@@ -51,11 +51,9 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-    private void showCoordinates(Weather weather) {
+    private void showCoordinates(FiveDayResponse fiveDayResponse) {
         if (isViewAttached() && getView() != null) {
-            getView().showText("Coordinates: {"
-                    + weather.coordinates().longitude() + ","
-                    + weather.coordinates().latitude() + "}");
+            getView().showText("DateTime: {" + fiveDayResponse.threeHourlyUpdates().get(0).dateTime() + "}");
         }
     }
 }

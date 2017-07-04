@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkService {
 
-    private static final String DEFAULT_WEATHER_URL = "http://samples.openweathermap.org";
+    private static final String DEFAULT_WEATHER_URL = "http://api.openweathermap.org";
 
     private final Retrofit retrofit;
 
