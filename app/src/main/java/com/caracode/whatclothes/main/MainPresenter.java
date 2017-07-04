@@ -76,7 +76,7 @@ class MainPresenter extends TiPresenter<MainView> {
 
     private void showPhoto(String photoUrl) {
         if (isViewAttached() && getView() != null) {
-            getView().showText("PhotoUrl: {" + photoUrl + "}");
+            getView().showPhoto(photoUrl);
         }
     }
 }

@@ -10,5 +10,8 @@ public interface MainView extends TiView {
     @CallOnMainThread
     void showText(final String text);
 
+    @CallOnMainThread
+    void showPhoto(String photoUrl);
+
     Observable<Object> onButtonPress();
 }

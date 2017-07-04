@@ -3,8 +3,10 @@ package com.caracode.whatclothes.main;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.caracode.whatclothes.R;
 import com.caracode.whatclothes.common.BaseActivity;
 import com.caracode.whatclothes.common.ComponentManager;
@@ -20,7 +22,9 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainView> implements MainView {
 
-    @BindView(R.id.text_view)
+    @BindView(R.id.main_image)
+    ImageView ivMain;
+    @BindView(R.id.main_text)
     TextView tvHelloWorld;
     @BindView(R.id.button)
     Button bChange;
@@ -55,5 +59,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @Override
     public void showText(String text) {
         tvHelloWorld.append("\n" + text);
+    }
+
+    @Override
+    public void showPhoto(String photoUrl) {
+        Glide.with(this).load(photoUrl).into(ivMain);
     }
 }
