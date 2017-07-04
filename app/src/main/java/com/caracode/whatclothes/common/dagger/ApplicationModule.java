@@ -3,11 +3,14 @@ package com.caracode.whatclothes.common.dagger;
 import android.support.annotation.NonNull;
 
 import com.caracode.whatclothes.api.WeatherApi;
+import com.caracode.whatclothes.common.DateTimeDeserializer;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
 import com.caracode.whatclothes.service.NetworkService;
 import com.caracode.whatclothes.service.WeatherService;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
+
+import org.joda.time.DateTime;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,6 +25,7 @@ public class ApplicationModule {
     @ApplicationScope
     GsonConverterFactory provideGsonConverterFactory() {
         return GsonConverterFactory.create(new GsonBuilder()
+                .registerTypeAdapter(DateTime.class, new DateTimeDeserializer())
                     .registerTypeAdapterFactory(GsonAdapterFactory.create())
                     .create());
     }
