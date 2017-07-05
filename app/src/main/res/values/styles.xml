@@ -9,8 +9,6 @@
     </style>
 
     <style name="ShadowEffect">
-        <item name="android:paddingLeft">12sp</item>
-        <item name="android:paddingBottom">12sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">48sp</item>
         <item name="android:shadowColor">@android:color/black</item>
@@ -19,19 +17,4 @@
         <item name="android:shadowRadius">8</item>
     </style>
 
-    <style name="ShadowEffect.SmallBlue">
-        <item name="android:paddingLeft">12sp</item>
-        <item name="android:paddingBottom">6sp</item>
-        <item name="android:textColor">@color/blue</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:shadowRadius">4</item>
-    </style>
-
-    <style name="ShadowEffect.SmallRed">
-        <item name="android:paddingLeft">12sp</item>
-        <item name="android:paddingBottom">6sp</item>
-        <item name="android:textColor">@color/red</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:shadowRadius">4</item>
-    </style>
 </resources>
