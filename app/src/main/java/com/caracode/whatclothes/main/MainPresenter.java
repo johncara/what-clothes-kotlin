@@ -33,13 +33,13 @@ class MainPresenter extends TiPresenter<MainView> {
 
         networkDisposable.add(
                 weatherService.getWeather().subscribe(
-                        this::showCoordinates,
+                        this::showDate,
                         Throwable::printStackTrace));
 
         networkDisposable.add(
                 photoService
                         .getPhotos()
-                        .map(photosResponse -> photosResponse.photos().photos().get(0))
+                        .map(photosResponse -> photosResponse.photos().photos().get(2))
                         .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
                                                 photo.farm(), photo.server(), photo.id(), photo.secret()))
                         .subscribe(
@@ -68,9 +68,9 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-    private void showCoordinates(FiveDayResponse fiveDayResponse) {
+    private void showDate(FiveDayResponse fiveDayResponse) {
         if (isViewAttached() && getView() != null) {
-            getView().showText("DateTime: {" + fiveDayResponse.threeHourlyUpdates().get(0).dateTime() + "}");
+            getView().showText(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
         }
     }
 

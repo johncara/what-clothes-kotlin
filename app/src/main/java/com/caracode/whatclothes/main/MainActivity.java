@@ -22,8 +22,10 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainView> implements MainView {
 
-    @BindView(R.id.main_image)
+    @BindView(R.id.iv_main)
     ImageView ivMain;
+    @BindView(R.id.tv_date_time)
+    TextView tvDateTime;
     @BindView(R.id.main_text)
     TextView tvHelloWorld;
     @BindView(R.id.button)
@@ -58,7 +60,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
 
     @Override
     public void showText(String text) {
-        tvHelloWorld.append("\n" + text);
+        tvDateTime.setText(text);
     }
 
     @Override
