@@ -9,10 +9,15 @@ import com.caracode.whatclothes.service.WeatherService;
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observables.GroupedObservable;
 
 class MainPresenter extends TiPresenter<MainView> {
 
@@ -46,51 +51,53 @@ class MainPresenter extends TiPresenter<MainView> {
                 weather.toObservable()
                         .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
 
-//        Observable<FiveDayResponse.ThreeHourlyUpdate> threeHourlyUpdateToday = threeHourlyUpdateObservable
-//                .takeUntil(thu -> {
-//                    return thu.dateTime().isBefore(new DateTime().toLocalDate().plusDays(1).toDateTimeAtStartOfDay());
-//                });
+        Observable<GroupedObservable<Integer, FiveDayResponse.ThreeHourlyUpdate>> fiveDaysWeather =
+                threeHourlyUpdateObservable
+                        .groupBy(threeHourlyUpdate -> Days.daysBetween(new DateTime().toLocalDate(), threeHourlyUpdate.dateTime().toLocalDate()).getDays());
 
-        Observable<FiveDayResponse.ThreeHourlyUpdate> firstDay =
-            threeHourlyUpdateObservable
-                .groupBy(threeHourlyUpdate -> threeHourlyUpdate.dateTime().dayOfMonth().get())
-                .concatMap(groupedObservable -> groupedObservable)
-                    .takeUntil(thu -> {
-                            return thu.dateTime().isBefore(new DateTime().toLocalDate().plusDays(1).toDateTimeAtStartOfDay());
-                        });
+        Observable<Map<Integer, Double>> minTemperature =
+                fiveDaysWeather.concatMap(groupedObs ->
+                        groupedObs.collect(HashMap<Integer, Double>::new,
+                                (map, thisUpdate) -> {
+                                    double previousMin = map.get(groupedObs.getKey()) == null ? MAX_TEMP : map.get(groupedObs.getKey());
+                                    map.put(groupedObs.getKey(), Math.min(previousMin, thisUpdate.main().minTemp()));
+                                }
+                        ).toObservable()
+                );
+
+//                        .subscribe(map -> {
+//                            for (Map.Entry<Integer, Double> entry : map.entrySet()) {
+//                                System.out.println("Entry: {" + entry.getKey() + "," + entry.getValue() + "}");
+//                            }
+//                        });
 
 
+        Observable<Map<Integer, Double>> maxTemperature =
+                fiveDaysWeather.concatMap(groupedObs ->
+                        groupedObs.collect(HashMap<Integer, Double>::new,
+                                (map, thisUpdate) -> {
+                                    double previousMax = map.get(groupedObs.getKey()) == null ? MIN_TEMP : map.get(groupedObs.getKey());
+                                    map.put(groupedObs.getKey(), Math.max(previousMax, thisUpdate.main().maxTemp()));
+                                }
+                        ).toObservable()
+                );
 
-//                .concatMap(groupedObservable ->
-//                        groupedObservable.takeUntil(thu -> {
-//                            DateTime now = new DateTime();
-//                            return thu.dateTime().isBefore(now.toLocalDate().plusDays(1).toDateTimeAtStartOfDay(now.getZone()));
-//                        }));
-
-        Single<Double> minTemperature =
-                firstDay
-                        .reduce(MAX_TEMP, (running, thisUpdate) ->
-                                Math.min(running, thisUpdate.main().minTemp()));
-        Single<Double> maxTemperature =
-                firstDay
-                        .reduce(MIN_TEMP, (running, thisUpdate) ->
-                                Math.max(running, thisUpdate.main().maxTemp()));
-
-        networkDisposable.add(
-                Single.zip(displayableDate, minTemperature, maxTemperature, MainViewModel::create)
-                .subscribe(
-                        this::showWeather,
-                        Throwable::printStackTrace));
-
-        networkDisposable.add(
-                photoService
-                        .getPhotos()
-                        .map(photosResponse -> photosResponse.photos().photos().get(3))
-                        .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
-                                                photo.farm(), photo.server(), photo.id(), photo.secret()))
-                        .subscribe(
-                                this::showPhoto,
-                                Throwable::printStackTrace));
+//
+//        networkDisposable.add(
+//                Single.zip(displayableDate, minTemperature, maxTemperature, MainViewModel::create)
+//                .subscribe(
+//                        this::showWeather,
+//                        Throwable::printStackTrace));
+//
+//        networkDisposable.add(
+//                photoService
+//                        .getPhotos()
+//                        .map(photosResponse -> photosResponse.photos().photos().get(3))
+//                        .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
+//                                                photo.farm(), photo.server(), photo.id(), photo.secret()))
+//                        .subscribe(
+//                                this::showPhoto,
+//                                Throwable::printStackTrace));
 
 
 //        viewDisposable.add(
