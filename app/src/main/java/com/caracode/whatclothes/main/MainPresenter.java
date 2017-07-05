@@ -1,6 +1,7 @@
 package com.caracode.whatclothes.main;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
 import com.caracode.whatclothes.service.PhotoService;
@@ -8,6 +9,7 @@ import com.caracode.whatclothes.service.WeatherService;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 class MainPresenter extends TiPresenter<MainView> {
@@ -31,10 +33,29 @@ class MainPresenter extends TiPresenter<MainView> {
     protected void onAttachView(@NonNull final MainView view) {
         super.onAttachView(view);
 
+        Single<FiveDayResponse> weather = weatherService.getWeather();
+        Single<String> displayableDate =
+                weather.map(fiveDayResponse ->
+                                fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
+        Single<Double> minTemperature =
+                weather.toObservable()
+                        .flatMapIterable(FiveDayResponse::threeHourlyUpdates)
+                        .reduce((double) 100, (running, thisUpdate) ->
+                                Math.min(running, thisUpdate.main().minTemp()));
+
         networkDisposable.add(
-                weatherService.getWeather().subscribe(
-                        this::showDate,
+                Single.zip(displayableDate, minTemperature, Pair::new)
+                .subscribe(
+                        this::showWeather,
                         Throwable::printStackTrace));
+
+
+
+//        networkDisposable.add(
+//                weatherService.getWeather()
+//                        .subscribe(
+//                                this::showWeather,
+//                                Throwable::printStackTrace));
 
         networkDisposable.add(
                 photoService
@@ -47,9 +68,9 @@ class MainPresenter extends TiPresenter<MainView> {
                                 Throwable::printStackTrace));
 
 
-        viewDisposable.add(
-                view.onButtonPress().subscribe(
-                        o -> view.showDate("Changed date")));
+//        viewDisposable.add(
+//                view.onButtonPress().subscribe(
+//                        o -> view.showWeather("Changed date")));
     }
 
     @Override
@@ -68,9 +89,15 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-    private void showDate(FiveDayResponse fiveDayResponse) {
+//    private void showDate(FiveDayResponse fiveDayResponse) {
+//        if (isViewAttached() && getView() != null) {
+//            getView().showWeather(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
+//        }
+//    }
+
+    private void showWeather(Pair<String, Double> dateAndMinTemp) {
         if (isViewAttached() && getView() != null) {
-            getView().showDate(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
+            getView().showWeather(dateAndMinTemp);
         }
     }
 

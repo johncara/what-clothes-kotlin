@@ -28,5 +28,22 @@ public abstract class FiveDayResponse {
 
         @SerializedName("dt")
         public abstract DateTime dateTime();
+
+        @SerializedName("main")
+        public abstract Main main();
+
+        @AutoValue
+        public static abstract class Main {
+            public static TypeAdapter<Main> typeAdapter(Gson gson) {
+                return new AutoValue_FiveDayResponse_ThreeHourlyUpdate_Main.GsonTypeAdapter(gson);
+            }
+
+            @SerializedName("temp_min")
+            public abstract double minTemp();
+
+            @SerializedName("temp_max")
+            public abstract double maxTemp();
+
+        }
     }
 }
