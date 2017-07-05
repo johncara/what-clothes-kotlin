@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WhatClothes</string>
+    <string name="max_temp_format">Max: %1$.1f\u00B0</string>
+    <string name="min_temp_format">Min: %1$.1f\u00B0</string>
 </resources>

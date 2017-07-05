@@ -1,7 +1,6 @@
 package com.caracode.whatclothes.main;
 
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
 import com.caracode.whatclothes.service.PhotoService;
@@ -9,11 +8,14 @@ import com.caracode.whatclothes.service.WeatherService;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 class MainPresenter extends TiPresenter<MainView> {
 
+    private static final double MIN_TEMP = -100;
+    private static final double MAX_TEMP = 100;
     private static final String FLICKER_PHOTO_URL_FORMAT = "https://farm%1$s.staticflickr.com/%2$s/%3$s_%4$s.jpg";
 
     private final WeatherService weatherService;
@@ -37,30 +39,30 @@ class MainPresenter extends TiPresenter<MainView> {
         Single<String> displayableDate =
                 weather.map(fiveDayResponse ->
                                 fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
-        Single<Double> minTemperature =
+
+        Observable<FiveDayResponse.ThreeHourlyUpdate> threeHourlyUpdateObservable =
                 weather.toObservable()
-                        .flatMapIterable(FiveDayResponse::threeHourlyUpdates)
-                        .reduce((double) 100, (running, thisUpdate) ->
+                        .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
+
+        Single<Double> minTemperature =
+                threeHourlyUpdateObservable
+                        .reduce(MAX_TEMP, (running, thisUpdate) ->
                                 Math.min(running, thisUpdate.main().minTemp()));
+        Single<Double> maxTemperature =
+                threeHourlyUpdateObservable
+                        .reduce(MIN_TEMP, (running, thisUpdate) ->
+                                Math.max(running, thisUpdate.main().maxTemp()));
 
         networkDisposable.add(
-                Single.zip(displayableDate, minTemperature, Pair::new)
+                Single.zip(displayableDate, minTemperature, maxTemperature, MainViewModel::create)
                 .subscribe(
                         this::showWeather,
                         Throwable::printStackTrace));
 
-
-
-//        networkDisposable.add(
-//                weatherService.getWeather()
-//                        .subscribe(
-//                                this::showWeather,
-//                                Throwable::printStackTrace));
-
         networkDisposable.add(
                 photoService
                         .getPhotos()
-                        .map(photosResponse -> photosResponse.photos().photos().get(2))
+                        .map(photosResponse -> photosResponse.photos().photos().get(6))
                         .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
                                                 photo.farm(), photo.server(), photo.id(), photo.secret()))
                         .subscribe(
@@ -89,15 +91,9 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-//    private void showDate(FiveDayResponse fiveDayResponse) {
-//        if (isViewAttached() && getView() != null) {
-//            getView().showWeather(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
-//        }
-//    }
-
-    private void showWeather(Pair<String, Double> dateAndMinTemp) {
+    private void showWeather(MainViewModel mainViewModel) {
         if (isViewAttached() && getView() != null) {
-            getView().showWeather(dateAndMinTemp);
+            getView().showWeather(mainViewModel);
         }
     }
 

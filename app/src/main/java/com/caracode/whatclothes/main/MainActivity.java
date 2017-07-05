@@ -2,7 +2,6 @@ package com.caracode.whatclothes.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +26,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     ImageView ivMain;
     @BindView(R.id.tv_date_time)
     TextView tvDateTime;
+    @BindView(R.id.tv_max_temp)
+    TextView tvMaxTemp;
     @BindView(R.id.tv_min_temp)
     TextView tvMinTemp;
     @BindView(R.id.main_text)
@@ -62,9 +63,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     }
 
     @Override
-    public void showWeather(Pair<String, Double> dateAndMinTemp) {
-        tvDateTime.setText(dateAndMinTemp.first);
-        tvMinTemp.setText("Min: " + dateAndMinTemp.second);
+    public void showWeather(MainViewModel mainViewModel) {
+        tvDateTime.setText(mainViewModel.readableDate());
+        tvMaxTemp.setText(getString(R.string.max_temp_format, mainViewModel.maxTemperature()));
+        tvMinTemp.setText(getString(R.string.min_temp_format, mainViewModel.minTemperature()));
     }
 
     @Override

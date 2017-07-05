@@ -10,7 +10,7 @@ import io.reactivex.Observable;
 public interface MainView extends TiView {
 
     @CallOnMainThread
-    void showWeather(final Pair<String, Double> dateAndMinTemp);
+    void showWeather(final MainViewModel mainViewModel);
 
     @CallOnMainThread
     void showPhoto(String photoUrl);
