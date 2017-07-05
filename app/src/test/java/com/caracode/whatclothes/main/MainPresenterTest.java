@@ -52,7 +52,7 @@ public class MainPresenterTest {
 
         presenter.attachView(view);
 
-        verify(view).showText("Hello 30 Inch");
+        verify(view).showDate("Hello 30 Inch");
     }
 
     @After

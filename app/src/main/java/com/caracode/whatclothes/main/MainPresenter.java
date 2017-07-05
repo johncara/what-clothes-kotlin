@@ -49,7 +49,7 @@ class MainPresenter extends TiPresenter<MainView> {
 
         viewDisposable.add(
                 view.onButtonPress().subscribe(
-                        o -> view.showText("Hello 30 Inch")));
+                        o -> view.showDate("Changed date")));
     }
 
     @Override
@@ -70,7 +70,7 @@ class MainPresenter extends TiPresenter<MainView> {
 
     private void showDate(FiveDayResponse fiveDayResponse) {
         if (isViewAttached() && getView() != null) {
-            getView().showText(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
+            getView().showDate(fiveDayResponse.threeHourlyUpdates().get(0).dateTime().toString("EEE d MMM"));
         }
     }
 

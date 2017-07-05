@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     }
 
     @Override
-    public void showText(String text) {
+    public void showDate(String text) {
         tvDateTime.setText(text);
     }
 

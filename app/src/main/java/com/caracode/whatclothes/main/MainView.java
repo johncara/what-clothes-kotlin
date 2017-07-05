@@ -8,7 +8,7 @@ import io.reactivex.Observable;
 public interface MainView extends TiView {
 
     @CallOnMainThread
-    void showText(final String text);
+    void showDate(final String text);
 
     @CallOnMainThread
     void showPhoto(String photoUrl);
