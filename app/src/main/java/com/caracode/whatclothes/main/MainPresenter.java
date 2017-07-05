@@ -62,7 +62,7 @@ class MainPresenter extends TiPresenter<MainView> {
         networkDisposable.add(
                 photoService
                         .getPhotos()
-                        .map(photosResponse -> photosResponse.photos().photos().get(5))
+                        .map(photosResponse -> photosResponse.photos().photos().get(3))
                         .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
                                                 photo.farm(), photo.server(), photo.id(), photo.secret()))
                         .subscribe(
