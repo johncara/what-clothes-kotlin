@@ -8,6 +8,8 @@ import com.caracode.whatclothes.service.WeatherService;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import org.joda.time.DateTime;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
@@ -44,12 +46,33 @@ class MainPresenter extends TiPresenter<MainView> {
                 weather.toObservable()
                         .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
 
+//        Observable<FiveDayResponse.ThreeHourlyUpdate> threeHourlyUpdateToday = threeHourlyUpdateObservable
+//                .takeUntil(thu -> {
+//                    return thu.dateTime().isBefore(new DateTime().toLocalDate().plusDays(1).toDateTimeAtStartOfDay());
+//                });
+
+        Observable<FiveDayResponse.ThreeHourlyUpdate> firstDay =
+            threeHourlyUpdateObservable
+                .groupBy(threeHourlyUpdate -> threeHourlyUpdate.dateTime().dayOfMonth().get())
+                .concatMap(groupedObservable -> groupedObservable)
+                    .takeUntil(thu -> {
+                            return thu.dateTime().isBefore(new DateTime().toLocalDate().plusDays(1).toDateTimeAtStartOfDay());
+                        });
+
+
+
+//                .concatMap(groupedObservable ->
+//                        groupedObservable.takeUntil(thu -> {
+//                            DateTime now = new DateTime();
+//                            return thu.dateTime().isBefore(now.toLocalDate().plusDays(1).toDateTimeAtStartOfDay(now.getZone()));
+//                        }));
+
         Single<Double> minTemperature =
-                threeHourlyUpdateObservable
+                firstDay
                         .reduce(MAX_TEMP, (running, thisUpdate) ->
                                 Math.min(running, thisUpdate.main().minTemp()));
         Single<Double> maxTemperature =
-                threeHourlyUpdateObservable
+                firstDay
                         .reduce(MIN_TEMP, (running, thisUpdate) ->
                                 Math.max(running, thisUpdate.main().maxTemp()));
 
