@@ -1,5 +1,7 @@
 package com.caracode.whatclothes.main;
 
+import android.support.v4.util.Pair;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.List;
@@ -24,8 +26,10 @@ public abstract class MainViewModel {
 
         public abstract String photoUrl();
 
-        public static DayModel create(String readableDate, double minTemperature, double maxTemperature, String photoUrl) {
-            return new AutoValue_MainViewModel_DayModel(readableDate, minTemperature, maxTemperature, photoUrl);
+        public abstract Pair<Integer, Integer> clothesRefsUpperLower();
+
+        public static DayModel create(String readableDate, double minTemperature, double maxTemperature, String photoUrl, Pair<Integer, Integer> clothesRefsUpperLower) {
+            return new AutoValue_MainViewModel_DayModel(readableDate, minTemperature, maxTemperature, photoUrl, clothesRefsUpperLower);
         }
     }
 }

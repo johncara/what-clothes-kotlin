@@ -52,6 +52,10 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         TextView tvMaxTemp;
         @BindView(R.id.tv_min_temp)
         TextView tvMinTemp;
+        @BindView(R.id.iv_clothing_upper)
+        ImageView ivClothingUpper;
+        @BindView(R.id.iv_clothing_lower)
+        ImageView ivClothingLower;
 
         MainRecyclerHolder(View itemView) {
             super(itemView);
@@ -64,6 +68,8 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             tvMaxTemp.setText(context.getString(R.string.max_temp_format, dayModel.maxTemperature()));
             tvMinTemp.setText(context.getString(R.string.min_temp_format, dayModel.minTemperature()));
             Glide.with(context).load(dayModel.photoUrl()).into(ivMain);
+            ivClothingUpper.setImageResource(dayModel.clothesRefsUpperLower().first);
+            ivClothingLower.setImageResource(dayModel.clothesRefsUpperLower().second);
         }
     }
 }

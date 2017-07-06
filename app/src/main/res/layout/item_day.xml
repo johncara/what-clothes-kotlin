@@ -82,18 +82,18 @@
         app:layout_constraintRight_toRightOf="parent">
         
         <ImageView
-            android:id="@+id/iv_clothing_top"
+            android:id="@+id/iv_clothing_upper"
             android:layout_width="60dp"
             android:layout_height="64dp"
-            android:src="@drawable/tshirt"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            tools:src="@drawable/tshirt" />
 
         <ImageView
-            android:id="@+id/iv_clothing_bottom"
+            android:id="@+id/iv_clothing_lower"
             android:layout_width="60dp"
             android:layout_height="80dp"
-            android:src="@drawable/shorts"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            tools:src="@drawable/shorts" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

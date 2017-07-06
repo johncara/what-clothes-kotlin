@@ -1,8 +1,10 @@
 package com.caracode.whatclothes.main;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
+import com.caracode.whatclothes.common.Constants;
 import com.caracode.whatclothes.service.PhotoService;
 import com.caracode.whatclothes.service.WeatherService;
 
@@ -21,10 +23,7 @@ import io.reactivex.observables.GroupedObservable;
 
 class MainPresenter extends TiPresenter<MainView> {
 
-    private static final double MIN_TEMP = -100;
-    private static final double MAX_TEMP = 100;
     private static final long MAX_NUMBER_DAYS_TO_DISPLAY = 6;
-    private static final String FLICKER_PHOTO_URL_FORMAT = "https://farm%1$s.staticflickr.com/%2$s/%3$s_%4$s.jpg";
 
     private final WeatherService weatherService;
     private final PhotoService photoService;
@@ -68,14 +67,17 @@ class MainPresenter extends TiPresenter<MainView> {
         Observable<Double> minTemps = fiveDaysWeather.flatMap(groupedObs ->
                 groupedObs
                         .map(update -> update.main().minTemp())
-                        .reduce(MAX_TEMP, Math::min)
+                        .reduce(Constants.MAX_TEMP, Math::min)
                         .toObservable());
 
         Observable<Double> maxTemps = fiveDaysWeather.flatMap(groupedObs ->
                 groupedObs
                         .map(update -> update.main().maxTemp())
-                        .reduce(MIN_TEMP, Math::max)
+                        .reduce(Constants.MIN_TEMP, Math::max)
                         .toObservable());
+
+        Observable<Pair<Integer, Integer>> clothesRefsUpperLower =
+                Observable.zip(maxTemps, minTemps, ClothesPicker::getClothesUpperLower);
 
         Observable<String> photos = photoService
                 .getPhotos()
@@ -83,12 +85,12 @@ class MainPresenter extends TiPresenter<MainView> {
                 .flatMapIterable(photosResponse -> photosResponse.photos().photos())
                 .repeat()
                 .take(MAX_NUMBER_DAYS_TO_DISPLAY)
-                .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
+                .map(photo -> String.format(Constants.FLICKER_PHOTO_URL_FORMAT,
                         photo.farm(), photo.server(), photo.id(), photo.secret()));
 
 
         networkDisposable.add(
-                Observable.zip(displayableDates, minTemps, maxTemps, photos, MainViewModel.DayModel::create)
+                Observable.zip(displayableDates, minTemps, maxTemps, photos, clothesRefsUpperLower, MainViewModel.DayModel::create)
                         .collectInto(new ArrayList<MainViewModel.DayModel>(), List::add)
                 .subscribe(
                         list -> {
