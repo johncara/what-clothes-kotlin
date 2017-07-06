@@ -84,15 +84,15 @@
         <ImageView
             android:id="@+id/iv_clothing_top"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/jumper"
+            android:layout_height="64dp"
+            android:src="@drawable/tshirt"
             android:scaleType="fitCenter"/>
 
         <ImageView
             android:id="@+id/iv_clothing_bottom"
             android:layout_width="60dp"
-            android:layout_height="84dp"
-            android:src="@drawable/trousers"
+            android:layout_height="80dp"
+            android:src="@drawable/shorts"
             android:scaleType="fitCenter" />
 
     </LinearLayout>
