@@ -45,7 +45,7 @@ class MainPresenter extends TiPresenter<MainView> {
         Single<FiveDayResponse> weather = weatherService.getWeather();
 
         Observable<FiveDayResponse.ThreeHourlyUpdate> threeHourlyUpdateObservable =
-                weather.toObservable()
+                weather.toObservable().share()
                         .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
 
         Observable<String> displayableDates = threeHourlyUpdateObservable
