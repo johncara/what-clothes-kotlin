@@ -48,32 +48,33 @@ class MainPresenter extends TiPresenter<MainView> {
                 weather.toObservable()
                         .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
 
-        Single<List<String>> displayableDates = threeHourlyUpdateObservable
+        Observable<String> displayableDates = threeHourlyUpdateObservable
                 .map(threeHourlyUpdate -> threeHourlyUpdate.dateTime().toString("EEE d MMM"))
-                .distinctUntilChanged()
-                .collectInto(new ArrayList<>(), List::add);
+                .distinctUntilChanged();
 
         Observable<GroupedObservable<Integer, FiveDayResponse.ThreeHourlyUpdate>> fiveDaysWeather =
                 threeHourlyUpdateObservable
-                        .groupBy(threeHourlyUpdate -> Days.daysBetween(new DateTime().toLocalDate(), threeHourlyUpdate.dateTime().toLocalDate()).getDays());
+                        .groupBy(threeHourlyUpdate ->
+                                Days.daysBetween(new DateTime().toLocalDate(), threeHourlyUpdate.dateTime().toLocalDate()).getDays());
 
-        Single<ArrayList<Double>> minTemps = fiveDaysWeather.flatMap(groupedObs -> groupedObs
-                .map(update -> update.main().minTemp())
-                .reduce(MAX_TEMP, Math::min)
-                .toObservable())
-                .collectInto(new ArrayList<>(), List::add);
+        Observable<Double> minTemps = fiveDaysWeather.flatMap(groupedObs ->
+                groupedObs
+                        .map(update -> update.main().minTemp())
+                        .reduce(MAX_TEMP, Math::min)
+                        .toObservable());
 
-        Single<ArrayList<Double>> maxTemps = fiveDaysWeather.flatMap(groupedObs -> groupedObs
-                .map(update -> update.main().maxTemp())
-                .reduce(MIN_TEMP, Math::max)
-                .toObservable())
-                .collectInto(new ArrayList<>(), List::add);
+        Observable<Double> maxTemps = fiveDaysWeather.flatMap(groupedObs ->
+                groupedObs
+                        .map(update -> update.main().maxTemp())
+                        .reduce(MIN_TEMP, Math::max)
+                        .toObservable());
 
 
         networkDisposable.add(
-                Single.zip(displayableDates, minTemps, maxTemps, MainViewModel::createFromLists)
+                Observable.zip(displayableDates, minTemps, maxTemps, MainViewModel.MainViewDay::create)
+                        .collectInto(new ArrayList<MainViewModel.MainViewDay>(), List::add)
                 .subscribe(
-                        this::showWeather,
+                        list -> showWeather(MainViewModel.create(list)),
                         Throwable::printStackTrace));
 
         networkDisposable.add(

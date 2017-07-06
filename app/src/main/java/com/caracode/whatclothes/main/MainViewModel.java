@@ -2,7 +2,6 @@ package com.caracode.whatclothes.main;
 
 import com.google.auto.value.AutoValue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AutoValue
@@ -10,16 +9,8 @@ public abstract class MainViewModel {
 
     public abstract List<MainViewDay> mainViewDays();
 
-    private static MainViewModel create(List<MainViewDay> mainViewDays) {
+    public static MainViewModel create(List<MainViewDay> mainViewDays) {
             return new AutoValue_MainViewModel(mainViewDays);
-    }
-
-    public static MainViewModel createFromLists(List<String> readableDates, List<Double> minTemperatures, List<Double> maxTemperatures) {
-        List<MainViewDay> mainViewDays = new ArrayList<>();
-        for (int i = 0; i < readableDates.size(); i++) {
-            mainViewDays.add(MainViewDay.create(readableDates.get(i), minTemperatures.get(i), maxTemperatures.get(i)));
-        }
-        return MainViewModel.create(mainViewDays);
     }
 
     @AutoValue
