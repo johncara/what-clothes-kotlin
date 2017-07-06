@@ -31,6 +31,8 @@ class MainPresenter extends TiPresenter<MainView> {
     private final CompositeDisposable networkDisposable;
     private final CompositeDisposable viewDisposable;
 
+    private MainViewModel mainViewModel;
+
     MainPresenter(@NonNull WeatherService weatherService, @NonNull PhotoService photoService,
                   @NonNull CompositeDisposable networkDisposable, @NonNull CompositeDisposable viewDisposable) {
         this.weatherService = weatherService;
@@ -42,6 +44,11 @@ class MainPresenter extends TiPresenter<MainView> {
     @Override
     protected void onAttachView(@NonNull final MainView view) {
         super.onAttachView(view);
+
+        if (mainViewModel != null) {
+            updateUi(mainViewModel);
+            return;
+        }
 
         Single<FiveDayResponse> weather = weatherService.getWeather();
 
@@ -84,7 +91,10 @@ class MainPresenter extends TiPresenter<MainView> {
                 Observable.zip(displayableDates, minTemps, maxTemps, photos, MainViewModel.DayInfo::create)
                         .collectInto(new ArrayList<MainViewModel.DayInfo>(), List::add)
                 .subscribe(
-                        list -> updateUi(MainViewModel.create(list)),
+                        list -> {
+                            mainViewModel = MainViewModel.create(list);
+                            updateUi(mainViewModel);
+                        },
                         Throwable::printStackTrace));
 
 
