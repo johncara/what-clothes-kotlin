@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:elevation="2dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    tools:context="com.caracode.whatclothes.main.MainActivity">
+
+    <ImageView
+        android:id="@+id/iv_main"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="120dp"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/tv_date_time"
+        style="@style/ShadowEffect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_temperature_background"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:padding="8dp"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_main"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/tv_temp_heading"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/temperatures_heading"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/tv_max_temp"
+            android:layout_below="@id/tv_temp_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/tv_min_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_max_temp"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"/>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

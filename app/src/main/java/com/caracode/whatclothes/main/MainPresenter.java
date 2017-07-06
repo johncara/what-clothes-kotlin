@@ -88,19 +88,14 @@ class MainPresenter extends TiPresenter<MainView> {
 
 
         networkDisposable.add(
-                Observable.zip(displayableDates, minTemps, maxTemps, photos, MainViewModel.DayInfo::create)
-                        .collectInto(new ArrayList<MainViewModel.DayInfo>(), List::add)
+                Observable.zip(displayableDates, minTemps, maxTemps, photos, MainViewModel.DayModel::create)
+                        .collectInto(new ArrayList<MainViewModel.DayModel>(), List::add)
                 .subscribe(
                         list -> {
                             mainViewModel = MainViewModel.create(list);
                             updateUi(mainViewModel);
                         },
                         Throwable::printStackTrace));
-
-
-//        viewDisposable.add(
-//                view.onButtonPress().subscribe(
-//                        o -> view.updateUi("Changed date")));
     }
 
     @Override

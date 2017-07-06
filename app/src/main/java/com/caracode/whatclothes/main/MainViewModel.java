@@ -7,14 +7,14 @@ import java.util.List;
 @AutoValue
 public abstract class MainViewModel {
 
-    public abstract List<DayInfo> days();
+    public abstract List<DayModel> days();
 
-    public static MainViewModel create(List<DayInfo> mainViewDays) {
+    public static MainViewModel create(List<DayModel> mainViewDays) {
             return new AutoValue_MainViewModel(mainViewDays);
     }
 
     @AutoValue
-    public static abstract class DayInfo {
+    public static abstract class DayModel {
 
         public abstract String readableDate();
 
@@ -24,8 +24,8 @@ public abstract class MainViewModel {
 
         public abstract String photoUrl();
 
-        public static DayInfo create(String readableDate, double minTemperature, double maxTemperature, String photoUrl) {
-            return new AutoValue_MainViewModel_DayInfo(readableDate, minTemperature, maxTemperature, photoUrl);
+        public static DayModel create(String readableDate, double minTemperature, double maxTemperature, String photoUrl) {
+            return new AutoValue_MainViewModel_DayModel(readableDate, minTemperature, maxTemperature, photoUrl);
         }
     }
 }
