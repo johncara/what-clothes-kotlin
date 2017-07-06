@@ -63,18 +63,11 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     }
 
     @Override
-    public void showWeather(MainViewModel mainViewModel) {
-        MainViewModel.DayInfo.WeatherInfo weatherInfo = mainViewModel.days().get(0).weatherInfo();
-        if (weatherInfo != null) {
-            tvDateTime.setText(weatherInfo.readableDate());
-            tvMaxTemp.setText(getString(R.string.max_temp_format, weatherInfo.maxTemperature()));
-            tvMinTemp.setText(getString(R.string.min_temp_format, weatherInfo.minTemperature()));
-        }
-
-    }
-
-    @Override
-    public void showPhoto(String photoUrl) {
-        Glide.with(this).load(photoUrl).into(ivMain);
+    public void updateUi(MainViewModel mainViewModel) {
+        MainViewModel.DayInfo dayInfo = mainViewModel.days().get(0);
+        tvDateTime.setText(dayInfo.readableDate());
+        tvMaxTemp.setText(getString(R.string.max_temp_format, dayInfo.maxTemperature()));
+        tvMinTemp.setText(getString(R.string.min_temp_format, dayInfo.minTemperature()));
+        Glide.with(this).load(dayInfo.photoUrl()).into(ivMain);
     }
 }

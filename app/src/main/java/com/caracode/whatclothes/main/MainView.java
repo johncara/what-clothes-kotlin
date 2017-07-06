@@ -10,10 +10,7 @@ public interface MainView extends TiView {
 
     @CallOnMainThread
     @DistinctUntilChanged
-    void showWeather(final MainViewModel mainViewModel);
-
-    @CallOnMainThread
-    void showPhoto(String photoUrl);
+    void updateUi(final MainViewModel mainViewModel);
 
     Observable<Object> onButtonPress();
 }

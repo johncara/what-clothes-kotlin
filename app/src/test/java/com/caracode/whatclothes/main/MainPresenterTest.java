@@ -52,7 +52,7 @@ public class MainPresenterTest {
 
         presenter.attachView(view);
 
-        verify(view).showWeather("Hello 30 Inch");
+        verify(view).updateUi("Hello 30 Inch");
     }
 
     @After

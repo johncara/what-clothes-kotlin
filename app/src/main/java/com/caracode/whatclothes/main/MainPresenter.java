@@ -23,6 +23,7 @@ class MainPresenter extends TiPresenter<MainView> {
 
     private static final double MIN_TEMP = -100;
     private static final double MAX_TEMP = 100;
+    private static final long MAX_NUMBER_DAYS_TO_DISPLAY = 6;
     private static final String FLICKER_PHOTO_URL_FORMAT = "https://farm%1$s.staticflickr.com/%2$s/%3$s_%4$s.jpg";
 
     private final WeatherService weatherService;
@@ -69,29 +70,27 @@ class MainPresenter extends TiPresenter<MainView> {
                         .reduce(MIN_TEMP, Math::max)
                         .toObservable());
 
+        Observable<String> photos = photoService
+                .getPhotos()
+                .toObservable()
+                .flatMapIterable(photosResponse -> photosResponse.photos().photos())
+                .repeat()
+                .take(MAX_NUMBER_DAYS_TO_DISPLAY)
+                .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
+                        photo.farm(), photo.server(), photo.id(), photo.secret()));
+
 
         networkDisposable.add(
-                Observable.zip(displayableDates, minTemps, maxTemps, MainViewModel.DayInfo.WeatherInfo::create)
-                        .map(weatherInfo -> MainViewModel.DayInfo.create(weatherInfo, null))
+                Observable.zip(displayableDates, minTemps, maxTemps, photos, MainViewModel.DayInfo::create)
                         .collectInto(new ArrayList<MainViewModel.DayInfo>(), List::add)
                 .subscribe(
-                        list -> showWeather(MainViewModel.create(list)),
+                        list -> updateUi(MainViewModel.create(list)),
                         Throwable::printStackTrace));
-
-        networkDisposable.add(
-                photoService
-                        .getPhotos()
-                        .map(photosResponse -> photosResponse.photos().photos().get(3))
-                        .map(photo -> String.format(FLICKER_PHOTO_URL_FORMAT,
-                                                photo.farm(), photo.server(), photo.id(), photo.secret()))
-                        .subscribe(
-                                this::showPhoto,
-                                Throwable::printStackTrace));
 
 
 //        viewDisposable.add(
 //                view.onButtonPress().subscribe(
-//                        o -> view.showWeather("Changed date")));
+//                        o -> view.updateUi("Changed date")));
     }
 
     @Override
@@ -110,15 +109,9 @@ class MainPresenter extends TiPresenter<MainView> {
         }
     }
 
-    private void showWeather(MainViewModel mainViewModel) {
+    private void updateUi(MainViewModel mainViewModel) {
         if (isViewAttached() && getView() != null) {
-            getView().showWeather(mainViewModel);
-        }
-    }
-
-    private void showPhoto(String photoUrl) {
-        if (isViewAttached() && getView() != null) {
-            getView().showPhoto(photoUrl);
+            getView().updateUi(mainViewModel);
         }
     }
 }
