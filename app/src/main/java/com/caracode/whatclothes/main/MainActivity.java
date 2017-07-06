@@ -64,9 +64,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
 
     @Override
     public void showWeather(MainViewModel mainViewModel) {
-        tvDateTime.setText(mainViewModel.mainViewDays().get(0).readableDate());
-        tvMaxTemp.setText(getString(R.string.max_temp_format, mainViewModel.mainViewDays().get(0).maxTemperature()));
-        tvMinTemp.setText(getString(R.string.min_temp_format, mainViewModel.mainViewDays().get(0).minTemperature()));
+        MainViewModel.DayInfo.WeatherInfo weatherInfo = mainViewModel.days().get(0).weatherInfo();
+        if (weatherInfo != null) {
+            tvDateTime.setText(weatherInfo.readableDate());
+            tvMaxTemp.setText(getString(R.string.max_temp_format, weatherInfo.maxTemperature()));
+            tvMinTemp.setText(getString(R.string.min_temp_format, weatherInfo.minTemperature()));
+        }
+
     }
 
     @Override

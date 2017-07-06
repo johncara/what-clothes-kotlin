@@ -71,8 +71,9 @@ class MainPresenter extends TiPresenter<MainView> {
 
 
         networkDisposable.add(
-                Observable.zip(displayableDates, minTemps, maxTemps, MainViewModel.MainViewDay::create)
-                        .collectInto(new ArrayList<MainViewModel.MainViewDay>(), List::add)
+                Observable.zip(displayableDates, minTemps, maxTemps, MainViewModel.DayInfo.WeatherInfo::create)
+                        .map(weatherInfo -> MainViewModel.DayInfo.create(weatherInfo, null))
+                        .collectInto(new ArrayList<MainViewModel.DayInfo>(), List::add)
                 .subscribe(
                         list -> showWeather(MainViewModel.create(list)),
                         Throwable::printStackTrace));

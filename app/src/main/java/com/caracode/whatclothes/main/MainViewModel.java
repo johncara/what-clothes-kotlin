@@ -1,5 +1,7 @@
 package com.caracode.whatclothes.main;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.List;
@@ -7,23 +9,37 @@ import java.util.List;
 @AutoValue
 public abstract class MainViewModel {
 
-    public abstract List<MainViewDay> mainViewDays();
+    public abstract List<DayInfo> days();
 
-    public static MainViewModel create(List<MainViewDay> mainViewDays) {
+    public static MainViewModel create(List<DayInfo> mainViewDays) {
             return new AutoValue_MainViewModel(mainViewDays);
     }
 
     @AutoValue
-    public static abstract class MainViewDay {
+    public static abstract class DayInfo {
 
-        public abstract String readableDate();
+        @Nullable
+        public abstract WeatherInfo weatherInfo();
 
-        public abstract double minTemperature();
+        @Nullable
+        public abstract String photoUrl();
 
-        public abstract double maxTemperature();
+        public static DayInfo create(WeatherInfo weatherInfo, String photoUrl) {
+            return new AutoValue_MainViewModel_DayInfo(weatherInfo, photoUrl);
+        }
 
-        public static MainViewDay create(String readableDate, double minTemperature, double maxTemperature) {
-            return new AutoValue_MainViewModel_MainViewDay(readableDate, minTemperature, maxTemperature);
+        @AutoValue
+        public static abstract class WeatherInfo {
+
+            public abstract String readableDate();
+
+            public abstract double minTemperature();
+
+            public abstract double maxTemperature();
+
+            public static WeatherInfo create(String readableDate, double minTemperature, double maxTemperature) {
+                return new AutoValue_MainViewModel_DayInfo_WeatherInfo(readableDate, minTemperature, maxTemperature);
+            }
         }
     }
 }
