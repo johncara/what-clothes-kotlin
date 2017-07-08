@@ -86,7 +86,8 @@ class MainPresenter extends TiPresenter<MainView> {
                 .repeat()
                 .take(MAX_NUMBER_DAYS_TO_DISPLAY)
                 .map(photo -> String.format(Constants.FLICKER_PHOTO_URL_FORMAT,
-                        photo.farm(), photo.server(), photo.id(), photo.secret()));
+                        photo.farm(), photo.server(), photo.id(), photo.secret()))
+                .onErrorResumeNext(Observable.fromIterable(Constants.BACKUP_PHOTOS));
 
 
         networkDisposable.add(
