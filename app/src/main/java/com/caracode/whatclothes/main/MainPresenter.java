@@ -21,9 +21,13 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observables.GroupedObservable;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 class MainPresenter extends TiPresenter<MainView> {
 
     private static final long MAX_NUMBER_DAYS_TO_DISPLAY = 6;
+    private static final int TIMEOUT_SECONDS = 10;
+    private static final int NUM_RETRIES = 5;
 
     private final WeatherService weatherService;
     private final PhotoService photoService;
@@ -93,6 +97,8 @@ class MainPresenter extends TiPresenter<MainView> {
         networkDisposable.add(
                 Observable.zip(displayableDates, minTemps, maxTemps, photos, clothesRefsUpperLower, MainViewModel.DayModel::create)
                         .collectInto(new ArrayList<MainViewModel.DayModel>(), List::add)
+                        .timeout(TIMEOUT_SECONDS, SECONDS)
+                        .retry(NUM_RETRIES)
                 .subscribe(
                         list -> {
                             mainViewModel = MainViewModel.create(list);
