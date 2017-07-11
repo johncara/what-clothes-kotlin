@@ -7,6 +7,7 @@ public interface Constants {
 
     double MIN_TEMP = -100;
     double MAX_TEMP = 100;
+    String DATE_FORMAT = "EEE d MMM";
     String FLICKER_PHOTO_URL_FORMAT = "https://farm%1$s.staticflickr.com/%2$s/%3$s_%4$s.jpg";
     List<String> BACKUP_PHOTOS = Arrays.asList(
             "http://images.china.cn/attachement/jpg/site1007/20130912/001422373e19139b59f101.jpg",

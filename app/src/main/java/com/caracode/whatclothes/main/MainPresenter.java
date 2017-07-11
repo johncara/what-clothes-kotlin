@@ -60,7 +60,7 @@ class MainPresenter extends TiPresenter<MainView> {
                         .flatMapIterable(FiveDayResponse::threeHourlyUpdates);
 
         Observable<String> displayableDates = threeHourlyUpdateObservable
-                .map(threeHourlyUpdate -> threeHourlyUpdate.dateTime().toString("EEE d MMM"))
+                .map(threeHourlyUpdate -> threeHourlyUpdate.dateTime().toString(Constants.DATE_FORMAT))
                 .distinctUntilChanged();
 
         Observable<GroupedObservable<Integer, FiveDayResponse.ThreeHourlyUpdate>> fiveDaysWeather =
