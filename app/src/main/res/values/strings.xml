@@ -3,4 +3,6 @@
     <string name="max_temp_format">Max: %1$.1f\u00B0</string>
     <string name="min_temp_format">Min: %1$.1f\u00B0</string>
     <string name="temperatures_heading">Temperatures</string>
+    <string name="edit_temperatures_coming_soon">Option to edit temperatures… coming soon!</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

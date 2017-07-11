@@ -105,6 +105,10 @@ class MainPresenter extends TiPresenter<MainView> {
                             updateUi(mainViewModel);
                         },
                         Throwable::printStackTrace));
+
+        viewDisposable.add(
+                view.onFabClick()
+                        .subscribe(o -> view.displayUnimplementedMessage()));
     }
 
     @Override
