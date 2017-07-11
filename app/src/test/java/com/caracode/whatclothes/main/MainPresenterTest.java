@@ -42,17 +42,18 @@ public class MainPresenterTest {
     public void before() {
         presenter = new MainPresenter(weatherServiceMock, photoServiceMock, networkDisposable, viewDisposable);
         presenter.create();
-        when(view.onButtonPress()).thenReturn(Observable.never());
+        when(view.onFabClick()).thenReturn(Observable.never());
         when(weatherServiceMock.getWeather()).thenReturn(Single.never());
+        when(photoServiceMock.getPhotos()).thenReturn(Single.never());
     }
 
     @Test
-    public void testAttachShowText() {
-        when(view.onButtonPress()).thenReturn(Observable.just(new Object()));
+    public void testFabClick() {
+        when(view.onFabClick()).thenReturn(Observable.just(new Object()));
 
         presenter.attachView(view);
 
-        verify(view).updateUi("Hello 30 Inch");
+        verify(view).displayUnimplementedMessage();
     }
 
     @After
