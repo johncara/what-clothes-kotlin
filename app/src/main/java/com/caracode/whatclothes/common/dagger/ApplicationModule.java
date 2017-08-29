@@ -1,14 +1,8 @@
 package com.caracode.whatclothes.common.dagger;
 
-import android.support.annotation.NonNull;
-
-import com.caracode.whatclothes.api.PhotoApi;
-import com.caracode.whatclothes.api.WeatherApi;
 import com.caracode.whatclothes.common.DateTimeDeserializer;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
-import com.caracode.whatclothes.service.NetworkService;
-import com.caracode.whatclothes.service.PhotoService;
-import com.caracode.whatclothes.service.WeatherService;
+import com.caracode.whatclothes.main.dagger.MainActivityComponent;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 
@@ -20,7 +14,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.OkHttpClient;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module
+@Module(subcomponents = MainActivityComponent.class)
 public class ApplicationModule {
 
     @Provides
@@ -41,24 +35,6 @@ public class ApplicationModule {
     @ApplicationScope
     OkHttpClient provideStethoOkHttpClient() {
         return new OkHttpClient().newBuilder().addNetworkInterceptor(new StethoInterceptor()).build();
-    }
-
-    @Provides
-    @ApplicationScope
-    NetworkService provideNetworkService(@NonNull GsonConverterFactory gsonConverterFactory, @NonNull OkHttpClient stethoClient) {
-        return new NetworkService(gsonConverterFactory, stethoClient);
-    }
-
-    @Provides
-    @ApplicationScope
-    WeatherService provideWeatherService(@NonNull NetworkService networkService) {
-        return new WeatherService(networkService.createService(WeatherApi.class));
-    }
-
-    @Provides
-    @ApplicationScope
-    PhotoService providePhotoService(@NonNull NetworkService networkService) {
-        return new PhotoService(networkService.createService(PhotoApi.class, "https://api.flickr.com"));
     }
 
     @Provides
