@@ -2,7 +2,6 @@ package com.caracode.whatclothes.common.dagger;
 
 import com.caracode.whatclothes.common.DateTimeDeserializer;
 import com.caracode.whatclothes.common.GsonAdapterFactory;
-import com.caracode.whatclothes.main.dagger.MainActivityComponent;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 
@@ -14,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.OkHttpClient;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module(subcomponents = MainActivityComponent.class)
+@Module
 public class ApplicationModule {
 
     @Provides
