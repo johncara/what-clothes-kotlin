@@ -36,7 +36,7 @@ public class MainActivityModule {
 
     @Provides
     @MainScope
-    MainPresenter provideMyPresenter(WeatherService weatherService, PhotoService photoService, CompositeDisposable networkDisposable, CompositeDisposable viewDisposable) {
+    MainPresenter provideMainPresenter(WeatherService weatherService, PhotoService photoService, CompositeDisposable networkDisposable, CompositeDisposable viewDisposable) {
         return new MainPresenter(weatherService, photoService, networkDisposable, viewDisposable);
     }
 }
