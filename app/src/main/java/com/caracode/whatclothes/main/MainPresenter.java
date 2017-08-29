@@ -23,7 +23,7 @@ import io.reactivex.observables.GroupedObservable;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-class MainPresenter extends TiPresenter<MainView> {
+public class MainPresenter extends TiPresenter<MainView> {
 
     private static final long MAX_NUMBER_DAYS_TO_DISPLAY = 6;
     private static final int TIMEOUT_SECONDS = 10;
@@ -36,7 +36,7 @@ class MainPresenter extends TiPresenter<MainView> {
 
     private MainViewModel mainViewModel;
 
-    MainPresenter(@NonNull WeatherService weatherService, @NonNull PhotoService photoService,
+    public MainPresenter(@NonNull WeatherService weatherService, @NonNull PhotoService photoService,
                   @NonNull CompositeDisposable networkDisposable, @NonNull CompositeDisposable viewDisposable) {
         this.weatherService = weatherService;
         this.photoService = photoService;

@@ -8,16 +8,13 @@ import android.support.v7.widget.RecyclerView;
 
 import com.caracode.whatclothes.R;
 import com.caracode.whatclothes.common.BaseActivity;
-import com.caracode.whatclothes.common.ComponentManager;
-import com.caracode.whatclothes.service.PhotoService;
-import com.caracode.whatclothes.service.WeatherService;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainView> implements MainView {
 
@@ -27,18 +24,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     FloatingActionButton fab;
 
     @Inject
-    WeatherService weatherService;
-    @Inject
-    PhotoService photoService;
-    @Inject
-    CompositeDisposable networkDisposable;
-    @Inject
-    CompositeDisposable viewDisposable;
+    MainPresenter mainPresenter;
 
     private MainRecyclerAdapter mainRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainRecyclerAdapter = new MainRecyclerAdapter();
@@ -48,8 +40,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
     @NonNull
     @Override
     public MainPresenter providePresenter() {
-        ComponentManager.instance().get().inject(this);
-        return new MainPresenter(weatherService, photoService, networkDisposable, viewDisposable);
+        return mainPresenter;
     }
 
     @Override
