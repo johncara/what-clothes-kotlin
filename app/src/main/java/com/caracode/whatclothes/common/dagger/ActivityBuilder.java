@@ -1,22 +1,17 @@
 package com.caracode.whatclothes.common.dagger;
 
 
-import android.app.Activity;
-
 import com.caracode.whatclothes.main.MainActivity;
-import com.caracode.whatclothes.main.dagger.MainActivityComponent;
+import com.caracode.whatclothes.main.dagger.MainActivityModule;
+import com.caracode.whatclothes.main.dagger.MainScope;
 
-import dagger.Binds;
 import dagger.Module;
-import dagger.android.ActivityKey;
-import dagger.android.AndroidInjector;
-import dagger.multibindings.IntoMap;
+import dagger.android.ContributesAndroidInjector;
 
 @Module
 public abstract class ActivityBuilder {
 
-    @Binds
-    @IntoMap
-    @ActivityKey(MainActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity> bindMainActivity(MainActivityComponent.Builder builder);
+    @MainScope
+    @ContributesAndroidInjector(modules = MainActivityModule.class)
+    abstract MainActivity bindMainActivity();
 }
