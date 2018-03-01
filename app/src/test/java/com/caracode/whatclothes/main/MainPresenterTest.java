@@ -80,8 +80,8 @@ public class MainPresenterTest {
 
         presenter.attachView(viewMock);
 
-        verify(viewMock).updateUi(MainViewModel.create(Collections.singletonList(
-                MainViewModel.DayModel.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
+        verify(viewMock).updateUi(MainViewModel.Companion.create(Collections.singletonList(
+                MainViewModel.DayModel.Companion.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
                         new Pair<>(R.drawable.jumper, R.drawable.trousers)))));
     }
 
@@ -100,8 +100,8 @@ public class MainPresenterTest {
         reset(viewMock);
 
         presenter.attachView(viewMock);
-        verify(viewMock).updateUi(MainViewModel.create(Collections.singletonList(
-                MainViewModel.DayModel.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
+        verify(viewMock).updateUi(MainViewModel.Companion.create(Collections.singletonList(
+                MainViewModel.DayModel.Companion.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
                         new Pair<>(R.drawable.jacket, R.drawable.trousers)))));
     }
 

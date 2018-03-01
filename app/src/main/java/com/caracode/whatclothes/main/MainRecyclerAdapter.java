@@ -19,9 +19,9 @@ import butterknife.ButterKnife;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerHolder> {
 
-    private List<MainViewModel.DayModel> dayModels = new ArrayList<>();
+    private List<DayModel> dayModels = new ArrayList<>();
 
-    public void setDayModels(List<MainViewModel.DayModel> dayModels) {
+    public void setDayModels(List<DayModel> dayModels) {
         this.dayModels = dayModels;
         notifyDataSetChanged();
     }
@@ -62,14 +62,14 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(MainViewModel.DayModel dayModel) {
+        void bind(DayModel dayModel) {
             Context context = ivMain.getContext();
-            tvDateTime.setText(dayModel.readableDate());
-            tvMaxTemp.setText(context.getString(R.string.max_temp_format, dayModel.maxTemperature()));
-            tvMinTemp.setText(context.getString(R.string.min_temp_format, dayModel.minTemperature()));
-            Glide.with(context).load(dayModel.photoUrl()).into(ivMain);
-            ivClothingUpper.setImageResource(dayModel.clothesRefsUpperLower().first);
-            ivClothingLower.setImageResource(dayModel.clothesRefsUpperLower().second);
+            tvDateTime.setText(dayModel.getReadableDate());
+            tvMaxTemp.setText(context.getString(R.string.max_temp_format, dayModel.getMaxTemperature()));
+            tvMinTemp.setText(context.getString(R.string.min_temp_format, dayModel.getMinTemperature()));
+            Glide.with(context).load(dayModel.getPhotoUrl()).into(ivMain);
+            ivClothingUpper.setImageResource(dayModel.getClothesRefsUpperLower().first);
+            ivClothingLower.setImageResource(dayModel.getClothesRefsUpperLower().second);
         }
     }
 }

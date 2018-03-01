@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainView> implemen
 
     @Override
     public void updateUi(MainViewModel mainViewModel) {
-        mainRecyclerAdapter.setDayModels(mainViewModel.days());
+        mainRecyclerAdapter.setDayModels(mainViewModel.getDays());
     }
 
     @Override

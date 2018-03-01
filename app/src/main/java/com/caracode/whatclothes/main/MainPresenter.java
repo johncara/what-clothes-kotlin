@@ -95,13 +95,13 @@ public class MainPresenter extends TiPresenter<MainView> {
 
 
         networkDisposable.add(
-                Observable.zip(displayableDates, minTemps, maxTemps, photos, clothesRefsUpperLower, MainViewModel.DayModel::create)
-                        .collectInto(new ArrayList<MainViewModel.DayModel>(), List::add)
+                Observable.zip(displayableDates, minTemps, maxTemps, photos, clothesRefsUpperLower, DayModel::new)
+                        .collectInto(new ArrayList<DayModel>(), List::add)
                         .timeout(TIMEOUT_SECONDS, SECONDS)
                         .retry(NUM_RETRIES)
                 .subscribe(
                         list -> {
-                            mainViewModel = MainViewModel.create(list);
+                            mainViewModel = new MainViewModel(list);
                             updateUi(mainViewModel);
                         },
                         Throwable::printStackTrace));
