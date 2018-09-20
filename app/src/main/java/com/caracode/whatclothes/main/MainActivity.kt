@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.caracode.whatclothes.R
 import com.caracode.whatclothes.common.BaseActivity
-import com.caracode.whatclothes.main.MainRecyclerAdapter.MainRecyclerHolder
+import com.caracode.whatclothes.common.recycler.GenericRecyclerAdapter
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
@@ -19,14 +19,13 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     @Inject
     lateinit var mainCustomAdapter: MainCustomAdapter
 
-    lateinit var mainRecyclerAdapter: MainRecyclerAdapter<DayModel, DayModel, MainRecyclerAdapter.MainRecyclerHolder>
+    lateinit var mainRecyclerAdapter: GenericRecyclerAdapter<DayModel, DayModel, MainRecyclerHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainRecyclerAdapter = MainRecyclerAdapter(mainCustomAdapter, ::MainRecyclerHolder, R.layout.item_day)
-        mainCustomAdapter.setAdapterCallback(mainRecyclerAdapter)
+        mainRecyclerAdapter = GenericRecyclerAdapter(mainCustomAdapter, ::MainRecyclerHolder, R.layout.item_day)
         rv_main.adapter = mainRecyclerAdapter
     }
 

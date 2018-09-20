@@ -1,5 +1,6 @@
 package com.caracode.whatclothes.main
 
+import com.caracode.whatclothes.common.recycler.CustomAdapter
 import java.util.*
 
 
@@ -13,8 +14,8 @@ class MainCustomAdapter : CustomAdapter<DayModel, DayModel> {
         this.mainAdapterCallback = adapterCallback
     }
 
-    override fun setInputModels(dayModels: List<DayModel>) {
-        this.dayModels = dayModels
+    override fun setInputModels(inputModels: List<DayModel>) {
+        this.dayModels = inputModels
         mainAdapterCallback.dataSetChanged()
     }
 
@@ -29,5 +30,6 @@ class MainCustomAdapter : CustomAdapter<DayModel, DayModel> {
     interface MainAdapterCallback {
 
         fun dataSetChanged()
+
     }
 }
