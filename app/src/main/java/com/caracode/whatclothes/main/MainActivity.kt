@@ -1,24 +1,17 @@
 package com.caracode.whatclothes.main
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.RecyclerView
-import butterknife.BindView
 import com.caracode.whatclothes.R
 import com.caracode.whatclothes.common.BaseActivity
 import com.caracode.whatclothes.main.MainRecyclerAdapter.MainRecyclerHolder
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
-
-    @BindView(R.id.rv_main)
-    lateinit var rvMain: RecyclerView
-    @BindView(R.id.fab)
-    lateinit var fab: FloatingActionButton
 
     @Inject
     lateinit var mainPresenter: MainPresenter
@@ -34,7 +27,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         setContentView(R.layout.activity_main)
         mainRecyclerAdapter = MainRecyclerAdapter(mainCustomAdapter, ::MainRecyclerHolder, R.layout.item_day)
         mainCustomAdapter.setAdapterCallback(mainRecyclerAdapter)
-        rvMain.adapter = mainRecyclerAdapter
+        rv_main.adapter = mainRecyclerAdapter
     }
 
     override fun providePresenter(): MainPresenter {
