@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import butterknife.BindView
 import com.caracode.whatclothes.R
 import com.caracode.whatclothes.common.BaseActivity
+import com.caracode.whatclothes.main.MainRecyclerAdapter.MainRecyclerHolder
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
@@ -22,13 +23,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     @Inject
     lateinit var mainPresenter: MainPresenter
 
-    private var mainRecyclerAdapter: MainRecyclerAdapter? = null
+    @Inject
+    lateinit var mainCustomAdapter: MainCustomAdapter
+
+    lateinit var mainRecyclerAdapter: MainRecyclerAdapter<DayModel, DayModel, MainRecyclerAdapter.MainRecyclerHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        mainRecyclerAdapter = MainRecyclerAdapter()
+        mainRecyclerAdapter = MainRecyclerAdapter(mainCustomAdapter, ::MainRecyclerHolder, R.layout.item_day)
+        mainCustomAdapter.setAdapterCallback(mainRecyclerAdapter)
         rvMain.adapter = mainRecyclerAdapter
     }
 
@@ -37,7 +42,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     }
 
     override fun updateUi(mainViewModel: MainViewModel) {
-        mainRecyclerAdapter!!.setDayModels(mainViewModel.days)
+        mainRecyclerAdapter.setInputModels(mainViewModel.days)
     }
 
     override fun onFabClick(): Observable<Any> {

@@ -2,6 +2,7 @@ package com.caracode.whatclothes.main.dagger;
 
 import com.caracode.whatclothes.api.PhotoApi;
 import com.caracode.whatclothes.api.WeatherApi;
+import com.caracode.whatclothes.main.MainCustomAdapter;
 import com.caracode.whatclothes.main.MainPresenter;
 import com.caracode.whatclothes.service.NetworkService;
 import com.caracode.whatclothes.service.PhotoService;
@@ -38,6 +39,12 @@ public class MainActivityModule {
     @MainScope
     MainPresenter provideMainPresenter(WeatherService weatherService, PhotoService photoService, CompositeDisposable networkDisposable, CompositeDisposable viewDisposable) {
         return new MainPresenter(weatherService, photoService, networkDisposable, viewDisposable);
+    }
+
+    @Provides
+    @MainScope
+    MainCustomAdapter provideMainCustomAdapter() {
+        return new MainCustomAdapter();
     }
 }
 

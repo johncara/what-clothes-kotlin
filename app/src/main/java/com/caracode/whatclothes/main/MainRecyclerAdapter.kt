@@ -1,5 +1,6 @@
 package com.caracode.whatclothes.main
 
+import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,31 +11,47 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.caracode.whatclothes.R
-import java.util.*
+import kotlin.reflect.KFunction1
 
-class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerHolder>() {
+class MainRecyclerAdapter<
+        in IM : RecyclerInputModel,
+        in OM : RecyclerOutputModel,
+        RH>
+    (private val customAdapter: CustomAdapter<IM, OM>,
+     private val viewHolderConstructor: KFunction1<View, RH>,
+     @param:LayoutRes private val layoutId: Int)
+    : RecyclerView.Adapter<RH>(), MainCustomAdapter.MainAdapterCallback
+        where RH : MainRecyclerAdapter.RecyclerHolderInterface<OM>,
+        RH : RecyclerView.ViewHolder {
 
-    private var dayModels: List<DayModel> = ArrayList()
-
-    fun setDayModels(dayModels: List<DayModel>) {
-        this.dayModels = dayModels
+    override fun dataSetChanged() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainRecyclerHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_day, parent, false)
-        return MainRecyclerHolder(view)
+    fun setInputModels(inputModels: List<IM>) {
+        customAdapter.setInputModels(inputModels)
     }
 
-    override fun onBindViewHolder(holder: MainRecyclerHolder, position: Int) {
-        holder.bind(dayModels[position])
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RH {
+        val view = LayoutInflater.from(parent.context).inflate(layoutId, parent, false)
+        return viewHolderConstructor.invoke(view)
+    }
+
+    override fun onBindViewHolder(holder: RH, position: Int) {
+        val dayModel = customAdapter.getOutputModel(position)
+        holder.bind(dayModel)
     }
 
     override fun getItemCount(): Int {
-        return dayModels.size
+        return customAdapter.modelsSize()
     }
 
-    class MainRecyclerHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    interface RecyclerHolderInterface<in OM : RecyclerOutputModel> {
+        fun bind(outputModel: OM)
+    }
+
+    class MainRecyclerHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView),
+        RecyclerHolderInterface<DayModel> {
 
         @BindView(R.id.iv_main)
         lateinit var ivMain: ImageView
@@ -53,7 +70,7 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.MainRecycle
             ButterKnife.bind(this, itemView)
         }
 
-        internal fun bind(dayModel: DayModel) {
+        override fun bind(dayModel: DayModel) {
             val context = ivMain.context
             tvDateTime.text = dayModel.readableDate
             tvMaxTemp.text = context.getString(R.string.max_temp_format, dayModel.maxTemperature)
@@ -64,3 +81,4 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.MainRecycle
         }
     }
 }
+
