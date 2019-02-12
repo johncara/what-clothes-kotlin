@@ -1,7 +1,6 @@
 package com.caracode.whatclothes.main;
 
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 
 import com.caracode.whatclothes.api.response.FiveDayResponse;
 import com.caracode.whatclothes.common.Constants;
@@ -20,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observables.GroupedObservable;
+import kotlin.Pair;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -81,7 +81,7 @@ public class MainPresenter extends TiPresenter<MainView> {
                         .toObservable());
 
         Observable<Pair<Integer, Integer>> clothesRefsUpperLower =
-                Observable.zip(maxTemps, minTemps, ClothesPicker::getClothesUpperLower);
+                Observable.zip(maxTemps, minTemps, ClothesPicker.Companion::getClothesUpperLower);
 
         Observable<String> photos = photoService
                 .getPhotos()
