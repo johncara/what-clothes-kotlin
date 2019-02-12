@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.caracode.whatclothes.R
 import kotlinx.android.synthetic.main.item_day.view.*
@@ -32,10 +31,6 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.MainRecycle
     }
 
     class MainRecyclerHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        init {
-            ButterKnife.bind(this, itemView)
-        }
 
         internal fun bind(dayModel: DayModel) {
             itemView.apply {

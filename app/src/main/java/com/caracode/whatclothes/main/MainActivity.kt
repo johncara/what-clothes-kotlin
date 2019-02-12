@@ -3,14 +3,14 @@ package com.caracode.whatclothes.main
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.caracode.whatclothes.R
-import com.caracode.whatclothes.common.BaseActivity
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
+import net.grandcentrix.thirtyinch.TiActivity
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
+class MainActivity : TiActivity<MainPresenter, MainView>(), MainView {
 
     @Inject
     lateinit var mainPresenter: MainPresenter
