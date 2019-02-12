@@ -1,7 +1,5 @@
 package com.caracode.whatclothes.main;
 
-import android.support.v4.util.Pair;
-
 import com.caracode.whatclothes.R;
 import com.caracode.whatclothes.api.response.FiveDayResponse;
 import com.caracode.whatclothes.api.response.PhotosResponse;
@@ -22,6 +20,7 @@ import java.util.Collections;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+import kotlin.Pair;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.reset;
@@ -80,8 +79,8 @@ public class MainPresenterTest {
 
         presenter.attachView(viewMock);
 
-        verify(viewMock).updateUi(MainViewModel.Companion.create(Collections.singletonList(
-                MainViewModel.DayModel.Companion.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
+        verify(viewMock).updateUi(new MainViewModel(Collections.singletonList(
+                new DayModel(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
                         new Pair<>(R.drawable.jumper, R.drawable.trousers)))));
     }
 
@@ -100,9 +99,9 @@ public class MainPresenterTest {
         reset(viewMock);
 
         presenter.attachView(viewMock);
-        verify(viewMock).updateUi(MainViewModel.Companion.create(Collections.singletonList(
-                MainViewModel.DayModel.Companion.create(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
-                        new Pair<>(R.drawable.jacket, R.drawable.trousers)))));
+        verify(viewMock).updateUi(new MainViewModel(Collections.singletonList(
+                new DayModel(readableDate, minTemp, maxTemp, Constants.BACKUP_PHOTOS.get(0),
+                        new Pair<>(R.drawable.coat, R.drawable.trousers)))));
     }
 
     @After
