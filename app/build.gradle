@@ -8,7 +8,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'me.tatarka.retrolambda'
 
 buildscript {
     ext.kotlin_version = '1.2.30'
@@ -16,18 +15,17 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "${packageName}"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode versionMajor * 100000 + versionMinor * 10000 + versionPatch * 1000 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -51,9 +49,9 @@ android {
 
 dependencies {
     // Google Android Libraries
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     // Third Party Android Libraries
     compile "net.grandcentrix.thirtyinch:thirtyinch:0.8.0"
@@ -103,4 +101,5 @@ dependencies {
 }
 repositories {
     mavenCentral()
+    google()
 }
