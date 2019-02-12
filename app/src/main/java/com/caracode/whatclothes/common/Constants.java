@@ -15,5 +15,5 @@ public interface Constants {
             "http://travelhdwallpapers.com/wp-content/uploads/2017/01/london-tower-bridge-wallpaper.jpg",
             "http://bestworldtourism.com/wp-content/uploads/2011/07/Energy-London-Eye-Capsule.jpg",
             "https://ak2.picdn.net/shutterstock/videos/8425261/thumb/1.jpg",
-            "http://www.autoeurope.com/blog/wp-content/uploads/2015/10/hampstead-heath-london-uk.jpg");
+            "https://c8.alamy.com/comp/B5J3W1/st-jamess-park-with-big-ben-in-background-london-B5J3W1.jpg");
 }
