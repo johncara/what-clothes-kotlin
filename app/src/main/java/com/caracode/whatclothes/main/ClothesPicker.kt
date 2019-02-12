@@ -18,17 +18,17 @@ internal enum class ClothesPicker(private val minTempAbove: Double?,
 
     companion object {
         fun getClothesUpperLower(maxTemp: Double, minTemp: Double): Pair<Int, Int> {
-            val upper = if (minTemp > TShirtWeather.minTempAbove!! && maxTemp > TShirtWeather.maxTempAbove!!) {
+            val upper = if (TShirtWeather.minTempAbove.safeLessThan(minTemp) && TShirtWeather.maxTempAbove.safeLessThan(maxTemp)) {
                 TShirtWeather.drawableRes
-            } else if (minTemp > JacketWeather.minTempAbove && maxTemp < JacketWeather.maxTempBelow!!) {
+            } else if (JacketWeather.minTempAbove.safeLessThan(minTemp) && JacketWeather.maxTempBelow.safeGreaterThan(maxTemp)) {
                 JacketWeather.drawableRes
-            } else if (minTemp < CoatWeather.minTempBelow!!) {
+            } else if (CoatWeather.minTempBelow.safeGreaterThan(minTemp)) {
                 CoatWeather.drawableRes
             } else {
                 R.drawable.jumper
             }
 
-            val lower = if (minTemp > ShortsWeather.minTempAbove && maxTemp > ShortsWeather.maxTempAbove!!) {
+            val lower = if (ShortsWeather.minTempAbove.safeLessThan(minTemp) &&  ShortsWeather.maxTempAbove.safeLessThan(maxTemp)) {
                 ShortsWeather.drawableRes
             } else {
                 R.drawable.trousers
@@ -38,4 +38,12 @@ internal enum class ClothesPicker(private val minTempAbove: Double?,
         }
     }
 
+}
+
+private fun Double?.safeLessThan(other: Double): Boolean {
+    return this != null && this < other
+}
+
+private fun Double?.safeGreaterThan(other: Double): Boolean {
+    return this != null && this > other
 }
